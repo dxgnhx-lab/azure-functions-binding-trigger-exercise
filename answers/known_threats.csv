@@ -1,0 +1,11 @@
+user_id,threat_type,detection_date,severity,description,resolved
+USR001,data_exfiltration,2024-01-15,critical,Excessive file downloads before resignation,yes
+USR045,credential_theft,2024-02-20,high,Multiple failed login attempts followed by success,yes
+USR078,sabotage,2024-03-10,critical,Attempted deletion of critical system files,yes
+USR102,data_exfiltration,2024-04-05,high,Large email attachments to personal account,yes
+USR156,insider_trading,2024-05-12,medium,Access to confidential financial data before announcement,no
+USR201,intellectual_property_theft,2024-06-18,critical,Download of proprietary source code,yes
+USR234,policy_violation,2024-07-22,low,Unauthorized software installation,yes
+USR267,credential_theft,2024-08-30,high,Phishing attack targeting colleagues,yes
+USR289,data_exfiltration,2024-09-14,critical,USB device usage with large data transfer,yes
+USR312,sabotage,2024-10-25,medium,Modification of configuration files,no

@@ -133,3 +133,9 @@ __blobstorage__
 __queuestorage__
 __azurite_db*__.json
 .python_packages
+
+# CERT analysis output files
+cert_analysis_results.json
+cert_analysis_results.csv
+cert_threat_analysis.png
+user_risk_analysis.png
