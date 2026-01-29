@@ -1,0 +1,52 @@
+{
+  "high_risk_indicators": {
+    "file_access": {
+      "threshold_daily_access": 1000,
+      "threshold_unique_files": 500,
+      "threshold_sensitive_files": 50
+    },
+    "email_patterns": {
+      "external_recipients_threshold": 100,
+      "attachment_size_threshold_mb": 100,
+      "suspicious_keywords": ["confidential", "secret", "password", "credentials"]
+    },
+    "login_patterns": {
+      "off_hours_login_threshold": 10,
+      "failed_login_threshold": 20,
+      "multiple_location_threshold": 5
+    },
+    "network_activity": {
+      "data_transfer_threshold_gb": 50,
+      "external_connection_threshold": 200,
+      "suspicious_ports": [22, 23, 3389]
+    }
+  },
+  "threat_scenarios": {
+    "data_exfiltration": {
+      "indicators": ["high_file_access", "large_email_attachments", "external_transfers"],
+      "severity": "critical",
+      "recommended_actions": ["Immediate investigation", "Disable account", "Review access logs"]
+    },
+    "credential_theft": {
+      "indicators": ["multiple_failed_logins", "unusual_access_patterns", "privilege_escalation"],
+      "severity": "high",
+      "recommended_actions": ["Force password reset", "Review account activity", "Check for lateral movement"]
+    },
+    "sabotage": {
+      "indicators": ["mass_deletion", "system_modification", "unauthorized_access"],
+      "severity": "critical",
+      "recommended_actions": ["Immediate isolation", "Backup verification", "Forensic analysis"]
+    }
+  },
+  "analysis_parameters": {
+    "time_window_days": 30,
+    "anomaly_detection_threshold": 2.5,
+    "correlation_minimum": 0.7,
+    "risk_score_weights": {
+      "file_access": 0.3,
+      "email_activity": 0.25,
+      "login_behavior": 0.25,
+      "network_activity": 0.2
+    }
+  }
+}
