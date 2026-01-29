@@ -66,6 +66,18 @@ def analyze_user_threat(req: func.HttpRequest) -> func.HttpResponse:
     try:
         # 요청 본문 파싱
         req_body = req.get_json()
+        
+        # Validate required field
+        if 'user_id' not in req_body:
+            return func.HttpResponse(
+                json.dumps({
+                    "error": "user_id 필드가 필요합니다.",
+                    "status": "failed"
+                }, ensure_ascii=False),
+                status_code=400,
+                mimetype="application/json"
+            )
+        
         logging.info(f"사용자 데이터 수신: {req_body.get('user_id')}")
         
         # 사용자 행동 분석
@@ -181,7 +193,7 @@ def eventhub_threat_analyzer(azeventhub: func.EventHubEvent):
 
 
 @app.function_name(name="get_historical_analysis")
-@app.route(route="historical_analysis", methods=["GET"], auth_level=func.AuthLevel.ANONYMOUS)
+@app.route(route="historical_analysis", methods=["GET"], auth_level=func.AuthLevel.FUNCTION)
 def get_historical_analysis(req: func.HttpRequest) -> func.HttpResponse:
     """
     과거 위협 데이터 통계를 반환합니다.
@@ -281,6 +293,18 @@ def batch_analysis(req: func.HttpRequest) -> func.HttpResponse:
     try:
         req_body = req.get_json()
         users = req_body.get('users', [])
+        
+        # Limit batch size to prevent timeouts
+        MAX_BATCH_SIZE = 100
+        if len(users) > MAX_BATCH_SIZE:
+            return func.HttpResponse(
+                json.dumps({
+                    "error": f"일괄 분석은 최대 {MAX_BATCH_SIZE}명까지만 가능합니다.",
+                    "received": len(users)
+                }, ensure_ascii=False),
+                status_code=400,
+                mimetype="application/json"
+            )
         
         results = []
         high_risk_count = 0

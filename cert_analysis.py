@@ -76,6 +76,10 @@ class CERTInsiderThreatAnalyzer:
         Returns:
             dict: 위협 분석 결과
         """
+        # Validate user_id is present
+        if not user_data.get('user_id'):
+            raise ValueError("user_data must contain a 'user_id' field")
+        
         risk_scores = {}
         alerts = []
         
@@ -225,6 +229,10 @@ class CERTInsiderThreatAnalyzer:
             month_key = date.strftime('%Y-%m')
             monthly_threats[month_key] += 1
         
+        # Calculate resolution rate properly
+        resolved_count = resolution_stats.get('yes', 0)
+        resolution_rate = f"{(resolved_count / len(self.known_threats) * 100):.1f}%" if self.known_threats else "N/A"
+        
         analysis = {
             'total_threats': len(self.known_threats),
             'threat_type_distribution': dict(threat_types),
@@ -232,7 +240,7 @@ class CERTInsiderThreatAnalyzer:
             'resolution_status': dict(resolution_stats),
             'monthly_trend': dict(sorted(monthly_threats.items())),
             'most_common_threat': threat_types.most_common(1)[0] if threat_types else None,
-            'resolution_rate': f"{(list(resolution_stats.values())[0] / len(self.known_threats) * 100):.1f}%" if resolution_stats else "N/A"
+            'resolution_rate': resolution_rate
         }
         
         return analysis
